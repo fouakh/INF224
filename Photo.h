@@ -29,7 +29,7 @@ public:
     // Overridden display method
     void display(std::ostream& os) const override {
         Multimedia::display(os);
-        os << "Latitude: " << latitude << "\nLongitude: " << longitude << "\n";
+        os << "Latitude: " << latitude << "\nLongitude: " << longitude;
         std::cout << std::endl; 
     }
 

@@ -12,18 +12,20 @@ private:
 public:
     Video(const std::string& name = "", const std::string& fileName = "",
           int duration = 0)
-        : Multimedia(name, fileName), duration(duration) {}
+        : Multimedia(name, fileName) {
+            this->duration = duration;
+        }
 
     // Getter
     int getDuration() const { return duration; }
 
     // Setter
-    void setDuration(int dur) { duration = dur; }
+    void setDuration(int duration) { this->duration = duration; }
 
     // Overridden display method
     void display(std::ostream& os) const override {
         Multimedia::display(os); 
-        os << "Duration: " << duration << " seconds\n"; 
+        os << "Duration: " << duration << " seconds"; 
         std::cout << std::endl; 
     }
 
