@@ -2,12 +2,16 @@
 
 #include "Multimedia.h"
 
+#include <iostream>
+
 Multimedia::Multimedia() : name(""), fileName("") {}
 
 Multimedia::Multimedia(const std::string& name, const std::string& fileName)
     : name(name), fileName(fileName) {}
 
-Multimedia::~Multimedia() {}
+Multimedia::~Multimedia() {
+        std::cout << "Multimedia object '" << name << "' is being destroyed.\n";
+}
 
 std::string Multimedia::getName() const {
     return name;

@@ -1,15 +1,22 @@
+// Group.h
 
 #include "Multimedia.h"
 
 #include <string>
 #include <list>
+#include <memory> 
 
-class Group : public std::list<Multimedia*> {
+// Define a type alias for a shared pointer to Multimedia
+using MultimediaPtr = std::shared_ptr<Multimedia>;
+
+class Group : public std::list<MultimediaPtr> {
 private:
     std::string groupName;
-    
+
 public:
-    Group(const std::string& name) : groupName(name) {}
+    // Constructor
+    Group(const std::string& groupName) : groupName(groupName) {
+}
 
     // Accessor for the group's name
     const std::string& getName() const {
@@ -23,5 +30,5 @@ public:
             multimedia->display(os);
         }
     }
-
 };
+
