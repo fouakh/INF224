@@ -3,68 +3,58 @@
 #include "Photo.h"
 #include "Video.h"
 #include "Film.h"
+#include "Group.h"
 
 #include <iostream>
 
 int main() {
-    // Create an array of Multimedia pointers
-    Multimedia** multimedia = new Multimedia*[3];
+    // Création d'objets multimédia
+    Multimedia* photo1 = new Photo("Beach Vacation", "beach_vacation.jpg", 200.00, 500.00);
+    Multimedia* photo2 = new Photo("Winter Mountain", "winter_mountain.jpg", 150.00, 400.00);
+    Multimedia* video1 = new Video("Nature Documentary", "nature_doc.mp4", 25);
 
-    // Create instances of Photo, Video, and Film
-    multimedia[0] = new Photo("Vacation Photo", "vacation.jpg", 48.8566, 20.22);
-    multimedia[1] = new Video("Nature Documentary", "nature.mp4", 120);
+    int chaptersFilm1[] = {120, 55, 105, 40} ;
+    Multimedia* film1 = new Film("The Lord of the Rings", "lotr.mkv", 320, chaptersFilm1, 4);
 
-    // Dynamic chapter durations for the Film object
-    int chapters[] = {15, 25, 30, 20};
-    multimedia[2] = new Film("Adventure Film", "adventure.mp4", 90, chapters, 4);
+    // Création des groupes
+    Group* photoGroup = new Group("Photos");
+    Group* videoGroup = new Group("Videos");
+    Group* vacationGroup = new Group("Vacations");
 
-    // Loop through the array and display attributes or play the media
-    for (int i = 0; i < 3; ++i) {
-        multimedia[i]->display(std::cout); 
-        std::cout << std::endl;
-    }
+    // Ajout d'objets dans les groupes
+    photoGroup->push_back(photo1);
+    photoGroup->push_back(photo2);
+    videoGroup->push_back(video1);
+    vacationGroup->push_back(photo1);
+    vacationGroup->push_back(photo2);
+    vacationGroup->push_back(video1);
+    vacationGroup->push_back(film1);
 
-    // Modify and reuse the Film object to test dynamic memory management
-    Film* film = dynamic_cast<Film*>(multimedia[2]); 
-    if (film) {
-        int newChapters[] = {35, 55};
-        film->setChapters(newChapters, 2); // Modify the chapters
-        std::cout << "After modifying chapters:\n";
-        film->display(std::cout);
-   
-        // Get a copy of the chapter durations
-        int* chapterDurationsCopy = film->getChapterDurationsCopy();
-        size_t numChapters = film->getNumChapters();
+    // Affichage des groupes
+    std::cout << "Displaying 'Photos' group:" << std::endl;
+    photoGroup->display(std::cout);
 
-        // Modify the copied array
-        chapterDurationsCopy[0] = 99; // Change the first chapter duration
+    std::cout << "\nDisplaying 'Videos' group:" << std::endl;
+    videoGroup->display(std::cout);
 
-        // Display the modified copy
-        std::cout << "Modified Chapter Durations (copy only): ";
-        for (size_t i = 0; i < numChapters; ++i) {
-            std::cout << chapterDurationsCopy[i] << " ";
-        }
-        std::cout << std::endl;
+    std::cout << "\nDisplaying 'Vacations' group:" << std::endl;
+    vacationGroup->display(std::cout);
 
-        // Get another copy and verify the Film instance's internal array is unchanged
-        int* chapterDurationsCopyAgain = film->getChapterDurationsCopy();
+    delete photoGroup; // Détruit uniquement le groupe, pas les objets
 
-        std::cout << "Original Chapter Durations (after modification): ";
-        for (size_t i = 0; i < numChapters; ++i) {
-            std::cout << chapterDurationsCopyAgain[i] << " ";
-        }
-        std::cout << std::endl;
+    // Vérification que les objets existent encore
+    std::cout << "\nAfter deleting 'Photos' group, checking individual elements:" << std::endl;
+    std::cout << "Displaying photo1:" << std::endl;
+    photo1->display(std::cout);
 
-        // Clean up the copied arrays
-        delete[] chapterDurationsCopy;
-        delete[] chapterDurationsCopyAgain;
-    }
+    std::cout << "Displaying photo2:" << std::endl;
+    photo2->display(std::cout);
 
-    for (int i = 0; i < 3; ++i) {
-        delete multimedia[i];
-    }
-
-    delete[] multimedia;
+    // Libération de la mémoire
+    delete photo1;
+    delete photo2;
+    delete video1;
+    delete film1;
 
     return 0;
 }
