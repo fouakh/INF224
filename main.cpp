@@ -1,45 +1,38 @@
-#include "Photo.h"
-#include "Video.h"
-#include "Film.h"
-#include "Group.h"
+// main.cpp
 
-#include <iostream>
-#include <memory> 
-
-using MultimediaPtr = std::shared_ptr<Multimedia>;
+#include "MediaManager.h"
 
 int main() {
-    // Creating multimedia objects using std::shared_ptr for automatic memory management
-    MultimediaPtr photo1 = std::make_shared<Photo>("Beach Vacation", "beach_vacation.jpg", 200.00, 500.00);
-    MultimediaPtr photo2 = std::make_shared<Photo>("Winter Mountain", "winter_mountain.jpg", 150.00, 400.00);
-    MultimediaPtr video1 = std::make_shared<Video>("Nature Documentary", "nature_doc.mp4", 25);
+    MediaManager manager;
 
-    int chaptersFilm1[] = {120, 55, 105, 40};
-    MultimediaPtr film1 = std::make_shared<Film>("The Lord of the Rings", "lotr.mkv", 320, chaptersFilm1, 4);
+    // Creating multimedia objects
+    auto photo1 = manager.createPhoto("Beach Vacation", "beach_vacation.jpg", 200.00, 500.00);
+    auto video1 = manager.createVideo("Nature Documentary", "nature_doc.mp4", 25);
+    int chapters[] = {120, 55, 105, 40};
+    auto film1 = manager.createFilm("The Lord of the Rings", "lotr.mkv", 320, chapters, 4);
 
-    // Creating groups to hold multimedia objects, using std::shared_ptr for automatic memory management
-    Group photoGroup("Photos");
-    Group videoGroup("Videos");
-    Group vacationGroup("Vacations");
+    // Creating groups
+    auto photoGroup = manager.createGroup("Photos");
+    auto vacationGroup = manager.createGroup("Vacations");
 
-    // Adding multimedia objects to the groups
-    photoGroup.push_back(photo1);
-    photoGroup.push_back(photo2);
-    videoGroup.push_back(video1);
-    vacationGroup.push_back(photo1);
-    vacationGroup.push_back(photo2);
-    vacationGroup.push_back(video1);
-    vacationGroup.push_back(film1);
+    // Adding objects to groups
+    photoGroup->push_back(photo1);
+    vacationGroup->push_back(photo1);
+    vacationGroup->push_back(video1);
+    vacationGroup->push_back(film1);
 
-    // Displaying the groups
-    std::cout << "Displaying 'Photos' group:" << std::endl;
-    photoGroup.display(std::cout);
+    // Displaying groups
+    manager.displayGroup("Photos");
+    manager.displayGroup("Vacations");
 
-    std::cout << "\nDisplaying 'Videos' group:" << std::endl;
-    videoGroup.display(std::cout);
+    // Playing multimedia
+    // manager.playMultimedia("Nature Documentary");
 
-    std::cout << "\nDisplaying 'Vacations' group:" << std::endl;
-    vacationGroup.display(std::cout);
+    // Deleting a multimedia object
+    manager.deleteMultimedia("Beach Vacation");
+
+    // Deleting a group
+    manager.deleteGroup("Photos");
 
     return 0;
 }
