@@ -55,33 +55,36 @@ public:
     }
 
     // Method to find and display a Multimedia object by name
-    void displayMultimedia(const std::string& name) const {
+    std::string displayMultimedia(const std::string& name) const {
         auto it = multimediaTable.find(name);
         if (it != multimediaTable.end()) {
-            it->second->display(std::cout);
-        } else {
-            std::cout << "Multimedia object '" << name << "' not found.\n";
+            std::stringstream ss;
+            it->second->display(ss);
+            return ss.str();
         }
+        return "Error: Multimedia object '" + name + "' not found.";
     }
 
     // Method to find and display a Group by name
-    void displayGroup(const std::string& groupName) const {
+    std::string displayGroup(const std::string& groupName) const {
         auto it = groupTable.find(groupName);
         if (it != groupTable.end()) {
-            it->second->display(std::cout);
-        } else {
-            std::cout << "Group '" << groupName << "' not found.\n";
-        }
+            std::stringstream ss;
+            it->second->display(ss);
+            return ss.str();
+        } 
+        return "Group '" + groupName + "' not found.";
+        
     }
 
     // Method to play a Multimedia object by name
-    void playMultimedia(const std::string& name) const {
+    std::string playMultimedia(const std::string& name) const {
         auto it = multimediaTable.find(name);
         if (it != multimediaTable.end()) {
             it->second->play();
-        } else {
-            std::cout << "Multimedia object '" << name << "' not found.\n";
+            return "Playing: " + name;
         }
+        return "Error: Multimedia object '" + name + "' not found.";
     }
 
     // Method to delete a Multimedia object by name
